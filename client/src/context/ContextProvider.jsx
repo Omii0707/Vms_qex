@@ -1,18 +1,28 @@
-{/*import { createContext } from "react";
-import React from 'react';
+import React, { createContext, useContext, useState } from "react";
 
+const userContext = createContext();
 
-export const userContext = createContext()
+const ContextProvider = ({children}) => {
+  const [user, setUser] = useState(null);
 
+  const login = (user) => {
+        setUser(user)
 
-const ContextProvider = ({children}) =>{
-    const role = 'admin';
-    const authenticated = true;
-    return (        
-        <userContext. Provider value={{role, authenticated}}>
-                {children}
-        </userContext.Provider>
-    )
-}
-export default ContextProvider*/}
-// middleware/auth.js
+  };
+  const logout = () => {
+        setUser(null)
+        localStorage.removeItem("token")
+
+  };
+
+  return (
+    <userContext.Provider
+      value={{ user, login, logout }}>
+
+    {children}
+    </userContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(userContext)
+export default ContextProvider;

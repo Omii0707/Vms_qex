@@ -1,9 +1,15 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
-
-function ProtectedRoute() {
-  const isLoggedIn = window.localStorage.getItem("loggedIn");
-  return isLoggedIn==="true"?<Outlet/>:<Navigate to="login"/>;
-}
-
+import React, { useContext } from "react";
+import { userContext } from "./ContextProvider";
+import { Navigate } from "react-router-dom";
+const ProtectedRoute = ({ children, roles }) => {
+  const { role, authenticated } = useContext(userContext);
+  if (authenticated) {
+    return <Navigate to="/admin" />;
+  }
+  if (!roles.includes(role)) {
+    return <Navigate to="/" />;
+  }
+  return children;
+  I;
+};
 export default ProtectedRoute;

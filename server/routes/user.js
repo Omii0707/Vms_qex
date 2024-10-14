@@ -4,6 +4,8 @@ const router = express.Router();
 import { User } from "../models/User.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import { login } from '../controllers/authController.js'
+
 
 
 
@@ -28,7 +30,7 @@ router.post("/signup", async (req, res) => {
 
   
 
-  router.post("/login", async (req, res) => {
+  router.post("/login",login, async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
@@ -44,8 +46,9 @@ router.post("/signup", async (req, res) => {
       expiresIn: "1h",
     });
     res.cookie("token", token, { httpOnly: true, maxAge: 360000 });
-    return res.json({ status: true, message: "login successfully" });
+    
   });
+
 
   router.post("/forgot-password", async (req, res) => {
     const { email } = req.body;
